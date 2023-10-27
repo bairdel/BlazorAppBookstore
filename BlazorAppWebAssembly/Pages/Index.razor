@@ -1,0 +1,66 @@
+﻿@page "/"
+@using BlazorAppWebAssembly.Models
+
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<PageTitle>Book Catalog</PageTitle>
+<h1>Book Catalog </h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Genre</th>
+        <th>Price</th>
+        <th>Publish Date</th>
+        <th></th>
+    </tr>
+
+    <tbody>
+    @foreach(var book in books)
+    {
+        <tr>
+            <td>@book.ID</td>
+            <td>@book.Name</td>
+            <td>@book.Genre</td>
+            <td>@book.Price</td>
+            <td>@book.PublishDate</td>
+            <td></td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    private Book[] books = new[] //Add on top: @using BookStore.Client.Models;
+    {
+        New Book() 
+        {
+            ID = 1,
+            Name = “Java”,
+            Genre = “Programming”,
+            Price = 19.99M,
+            PublishDate = new DateTime(2022,2,10)
+        }
+        New Book()
+        {
+            ID = 2,
+            Name = “Data Science”,
+            Genre = “AI”,
+            Price = 39.99M,
+            PublishDate = new DateTime(2023,2,10)
+        }
+        New Book()
+        {
+            ID = 3,
+            Name = “Computer Systems”,
+            Genre = “Hardware”,
+            Price = 9.99M,
+            PublishDate = new DateTime(2021,2,10)
+        }
+    };
+};
