@@ -9,7 +9,7 @@ namespace BlazorAppWebAssembly
         {
             return books.ToArray();
         }
-        
+
         private static readonly List<Book> books = new() //Add on top: @using BookStore.Client.Models;
             {
         new Book()
@@ -36,7 +36,15 @@ namespace BlazorAppWebAssembly
             Price = 9.99M,
             PublishDate = new DateTime(2021,2,10)
         }
-    };
+        };
+
+
+
+        public static void AddBook(Book book)
+        {
+            book.ID = books.Max(book => book.ID) + 1;
+            books.Add(book);
+        }
 
 
 
