@@ -9,15 +9,23 @@
 
 
 <div class="row">
-    <div class="col-sm-4"> //Read more about this in Bootstrap page
-        <EditForm Model="@book" OnSubmit="HandleSubmit">
+    <div class="col-sm-4"> 
+        <EditForm Model="@book" OnValidSubmit="HandleSubmit">
+            <DataAnnotationsValidator/>
+            <ValidationSummary />
             <div class = "mb-3">
                 <label for = "name" class = "form-label">Name:</label>
                 <InputText id = "name" @bind-Value="@book.Name" class = "formcontrol"></InputText>
             </div>
             <div class = "mb-3">
                 <label for = "genre" class = "form-label">Genre:</label>
-                <InputText id = "genre" @bind-Value="@book.Genre" class = "formcontrol"></InputText>
+                <InputSelect id = "genre" @bind-Value="@book.Genre" class = "form-select">
+                    <option value="">Select Book</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="AI">AI</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Data Science">Data Science</option>
+                </InputSelect>
             </div>
             <div class = "mb-3">
                 <label for = "price" class = "form-label">Price:</label>

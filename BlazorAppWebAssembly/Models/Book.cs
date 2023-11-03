@@ -1,10 +1,17 @@
-﻿namespace BlazorAppWebAssembly.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BlazorAppWebAssembly.Models
 {
     public class Book
     {
-        public int ID { get; set; }
+        public int ID { get; set; } 
+        [Required]
         public required string Name { get; set; }
+        [Required]
+        [StringLength(20)]
+
         public required string Genre { get; set; }
+        [Range(1,100)]
         public decimal Price { get; set; }
         public DateTime PublishDate { get; set; }
     }
