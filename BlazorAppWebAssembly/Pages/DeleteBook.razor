@@ -1,11 +1,8 @@
 ﻿@using BlazorAppWebAssembly.Models
 
-<h3>DeleteBook</h3>
 
 
-
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -16,14 +13,14 @@
                 <button type="button"
                         class="btn btn-secondary"
                         data-bs-dismiss="modal"
-                @onclick="@Cancel">
-                    Cancel
+                        @onclick="@Cancel">
+                        Cancel
                 </button>
                 <button type="button"
                         class="btn btn-primary"
                         data-bs-dismiss="modal"
-                @onclick="@Confirm">
-                    Delete
+                        @onclick="@Confirm">
+                        Delete
                 </button>
             </div>
         </div>

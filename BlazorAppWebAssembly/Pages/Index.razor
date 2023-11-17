@@ -46,7 +46,7 @@ else
             <td>@book.Price</td>
             <td>@book.PublishDate.ToShortDateString() </td>
             <td><button class="btn btn-primary" @onclick="(() => EditBook(book.ID))"><i class = "oi oi-pencil"></i></button></td>
-            <button class="btn btn-danger" data-bs-toggle = "modal" data-bs-target = "#deleteModal" //toggling the modal from DeleteBook.razor
+            <button class="btn btn-danger" data-bs-toggle = "modal" data-bs-target = "#deleteModal" 
             @onclick="(() => currentBook = book)">
             <i class="oi oi-x"></i>
             </button>
