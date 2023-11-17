@@ -46,8 +46,24 @@ namespace BlazorAppWebAssembly
             books.Add(book);
         }
 
+        public static Book GetBook(int id)
+        {
+            return books.Find(book => book.ID == id) ?? throw new Exception("Could not find Book"); //It is a Lambda or Arrow function
+        }
 
-
+        public static void UpdateBook(Book updateBook)
+        {
+            Book existingBook = GetBook(updateBook.ID);
+            existingBook.Name = updateBook.Name;
+            existingBook.Genre = updateBook.Genre;
+            existingBook.Price = updateBook.Price;
+            existingBook.PublishDate = updateBook.PublishDate;
+        }
+        public static void DeleteBook(int id)
+        {
+            Book book = GetBook(id);
+            books.Remove(book);
+        }
 
     }
 }

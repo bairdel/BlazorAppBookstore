@@ -1,61 +1,105 @@
 ﻿@page "/book"
+@page "/book/{id:int}"
 @using BlazorAppWebAssembly.Models
 @inject NavigationManager NavigationManager
 
 
-<PageTitle>New Book</PageTitle>
+<PageTitle>@title</PageTitle>
 <h1>Book Catalog</h1>
-<h3>New Book</h3>
+<h3>@title</h3>
+@if (book is null)
+{
+    <p><em>Loading....</em></p>
+}
+else{
 
+    <div class="row">
+        <div class="col-sm-4"> 
+            <EditForm Model="@book" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary />
+                <div class = "mb-3">
+                    <label for = "name" class = "form-label">Name:</label>
+                    <InputText id = "name" @bind-Value="@book.Name" class = "formcontrol"></InputText>
+                </div>
+                <div class = "mb-3">
+                    <label for = "genre" class = "form-label">Genre:</label>
+                    <InputSelect id = "genre" @bind-Value="@book.Genre" class = "form-select">
+                        <option value="">Select Book</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="AI">AI</option>
+                        <option value="Programming">Programming</option>
+                        <option value="Data Science">Data Science</option>
+                    </InputSelect>
+                </div>
+                <div class = "mb-3">
+                    <label for = "price" class = "form-label">Price:</label>
+                    <InputNumber id = "price" @bind-Value="book.Price" class = "formcontrol"></InputNumber>
+                </div>
+                <div class = "mb-3">
+                    <label for = "publishDate" class = "form-label">Publish Date:</label>
+                    <InputDate id = "publishDate" @bind-Value="book.PublishDate" class = "formcontrol"></InputDate>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" @onclick="@Cancel">Cancel</button>
 
-<div class="row">
-    <div class="col-sm-4"> 
-        <EditForm Model="@book" OnValidSubmit="HandleSubmit">
-            <DataAnnotationsValidator/>
-            <ValidationSummary />
-            <div class = "mb-3">
-                <label for = "name" class = "form-label">Name:</label>
-                <InputText id = "name" @bind-Value="@book.Name" class = "formcontrol"></InputText>
-            </div>
-            <div class = "mb-3">
-                <label for = "genre" class = "form-label">Genre:</label>
-                <InputSelect id = "genre" @bind-Value="@book.Genre" class = "form-select">
-                    <option value="">Select Book</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="AI">AI</option>
-                    <option value="Programming">Programming</option>
-                    <option value="Data Science">Data Science</option>
-                </InputSelect>
-            </div>
-            <div class = "mb-3">
-                <label for = "price" class = "form-label">Price:</label>
-                <InputNumber id = "price" @bind-Value="book.Price" class = "formcontrol"></InputNumber>
-            </div>
-            <div class = "mb-3">
-                <label for = "publishDate" class = "form-label">Publish Date:</label>
-                <InputDate id = "publishDate" @bind-Value="book.PublishDate" class = "formcontrol"></InputDate>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-secondary" @onclick="@Cancel">Cancel</button>
-
-        </EditForm>
+            </EditForm>
+        </div>
     </div>
-</div>
 
-
+}
 
 @code {
-    private Book book = new()
-        { //on top include definition for this @using Models
-            Name = string.Empty,
-            Genre = string.Empty,
-            PublishDate = DateTime.UtcNow
+    [Parameter] //Attribute
+    public int? ID { get; set; } //It is a nullable property, it may not have any value
 
-        };
+    // private Book book = new()
+    //     { //on top include definition for this @using Models
+    //         Name = string.Empty,
+    //         Genre = string.Empty,
+    //         PublishDate = DateTime.UtcNow
+
+    //     };
+    private Book? book;
+    private string title = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        if (ID is not null)
+        {
+            Book foundBook = BookClient.GetBook(ID.Value); //Get the book from collection
+            book = new()
+                {
+                    ID = foundBook.ID,
+                    Name = foundBook.Name,
+                    Genre = foundBook.Genre,
+                    Price = foundBook.Price,
+                    PublishDate = foundBook.PublishDate
+                }; //It will find from collection, if not found it will create a new book in else part
+            title = $"Edit {book.Name}";
+        }
+        else
+        {
+            book = new()
+                {
+                    Name = string.Empty,
+                    Genre = string.Empty,
+                    PublishDate = DateTime.UtcNow
+                };
+            title = "New Book";
+        }
+    }
 
     private void HandleSubmit()
     {
-        BookClient.AddBook(book);
+        if (book!.ID == 0) //To compiler, we know it can be null, but we know it will not null so add !
+        {
+            BookClient.AddBook(book);
+        }
+        else
+        {
+            BookClient.UpdateBook(book);
+        }
         NavigationManager.NavigateTo("/");
     }
     private void Cancel()
